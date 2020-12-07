@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System Name="EllipseFitting" Comment="">
+	<Identification>
+	</Identification>
+	<VersionInfo Version="1.0" Author="LENOVO" Date="2020-07-24">
+	</VersionInfo>
+	<Application Name="EllipseFittingApp" Comment="">
+		<SubAppNetwork>
+			<FB Name="op_mqtt_subscriber" Type="SUBSCRIBE_1" Comment="" x="1200.0" y="666.6666666666667">
+				<Parameter Name="QI" Value="1"/>
+				<Parameter Name="ID" Value="raw[].mqtt[tcp://localhost:1883,forte,OP]"/>
+			</FB>
+			<FB Name="F_STRING_TO_REAL" Type="F_STRING_TO_REAL" Comment="" x="2266.666666666667" y="933.3333333333334">
+			</FB>
+			<FB Name="F_STRING_TO_REAL_1" Type="F_STRING_TO_REAL" Comment="" x="2266.666666666667" y="2133.3333333333335">
+			</FB>
+			<FB Name="pv_mqtt_subscriber" Type="SUBSCRIBE_1" Comment="" x="1200.0" y="1866.6666666666667">
+				<Parameter Name="QI" Value="1"/>
+				<Parameter Name="ID" Value="raw[].mqtt[tcp://localhost:1883,forte,PV]"/>
+			</FB>
+			<FB Name="EllipseFitting" Type="EllipseFitting" Comment="" x="4666.666666666667" y="1066.6666666666667">
+				<Parameter Name="L" Value="64"/>
+			</FB>
+			<FB Name="E_CTU" Type="E_CTU" Comment="" x="4266.666666666667" y="2533.3333333333335">
+				<Parameter Name="PV" Value="9000"/>
+			</FB>
+			<FB Name="CSV_WRITER_3" Type="CSV_WRITER_3" Comment="" x="7200.0" y="1466.6666666666667">
+				<Parameter Name="QI" Value="1"/>
+			</FB>
+			<FB Name="E_STOPWATCH" Type="E_STOPWATCH" Comment="" x="4000.0" y="266.6666666666667">
+			</FB>
+			<EventConnections>
+				<Connection Source="op_mqtt_subscriber.IND" Destination="F_STRING_TO_REAL.REQ" Comment="" dx1="240.0"/>
+				<Connection Source="pv_mqtt_subscriber.IND" Destination="F_STRING_TO_REAL_1.REQ" Comment="" dx1="240.0"/>
+				<Connection Source="op_mqtt_subscriber.INITO" Destination="EllipseFitting.INIT" Comment="" dx1="1426.6666666666667"/>
+				<Connection Source="F_STRING_TO_REAL_1.CNF" Destination="E_CTU.CU" Comment="" dx1="546.6666666666667"/>
+				<Connection Source="EllipseFitting.INITO" Destination="CSV_WRITER_3.INIT" Comment="" dx1="860.0"/>
+				<Connection Source="E_CTU.CUO" Destination="CSV_WRITER_3.REQ" Comment="" dx1="1206.6666666666667"/>
+				<Connection Source="F_STRING_TO_REAL.CNF" Destination="E_STOPWATCH.START" Comment="" dx1="753.3333333333334"/>
+				<Connection Source="EllipseFitting.CNF" Destination="E_STOPWATCH.STOP" Comment="" dx1="80.0" dx2="80.0" dy="-400.0"/>
+				<Connection Source="F_STRING_TO_REAL.CNF" Destination="EllipseFitting.REQ" Comment="" dx1="746.6666666666667"/>
+			</EventConnections>
+			<DataConnections>
+				<Connection Source="pv_mqtt_subscriber.RD_1" Destination="F_STRING_TO_REAL_1.IN" Comment="" dx1="240.0"/>
+				<Connection Source="op_mqtt_subscriber.RD_1" Destination="F_STRING_TO_REAL.IN" Comment="" dx1="240.0"/>
+				<Connection Source="F_STRING_TO_REAL.OUT" Destination="EllipseFitting.OP" Comment="" dx1="346.6666666666667"/>
+				<Connection Source="F_STRING_TO_REAL_1.OUT" Destination="EllipseFitting.PV" Comment="" dx1="346.6666666666667"/>
+				<Connection Source="EllipseFitting.STATUS" Destination="CSV_WRITER_3.SD_3" Comment="" dx1="1126.6666666666667"/>
+				<Connection Source="E_CTU.CV" Destination="CSV_WRITER_3.SD_1" Comment="" dx1="560.0"/>
+				<Connection Source="E_STOPWATCH.TD" Destination="CSV_WRITER_3.SD_2" Comment="" dx1="1266.6666666666667"/>
+			</DataConnections>
+		</SubAppNetwork>
+	</Application>
+	<Application Name="TestApp" Comment="">
+		<SubAppNetwork>
+			<FB Name="F_STRING_TO_REAL" Type="F_STRING_TO_REAL" Comment="" x="2980.0" y="833.3333333333334">
+			</FB>
+			<FB Name="pv_mqtt_subscriber" Type="SUBSCRIBE_1" Comment="" x="1913.3333333333335" y="1766.6666666666667">
+				<Parameter Name="QI" Value="1"/>
+				<Parameter Name="ID" Value="raw[].mqtt[tcp://localhost:1883,forte,PV]"/>
+			</FB>
+			<FB Name="op_mqtt_subscriber" Type="SUBSCRIBE_1" Comment="" x="1913.3333333333335" y="566.6666666666667">
+				<Parameter Name="QI" Value="1"/>
+				<Parameter Name="ID" Value="raw[].mqtt[tcp://localhost:1883,forte,OP]"/>
+			</FB>
+			<FB Name="Konstanta" Type="Konstanta" Comment="" x="4313.333333333334" y="833.3333333333334">
+				<Parameter Name="L" Value="512"/>
+			</FB>
+			<FB Name="F_STRING_TO_REAL_1" Type="F_STRING_TO_REAL" Comment="" x="2980.0" y="2033.3333333333335">
+			</FB>
+			<FB Name="c_bar" Type="c_bar" Comment="" x="5513.333333333334" y="833.3333333333334">
+			</FB>
+			<FB Name="Detect_Stiction" Type="Detect_Quantify" Comment="" x="7646.666666666667" y="1100.0">
+			</FB>
+			<FB Name="Eigenvector2x2" Type="Eigenvector" Comment="" x="6713.333333333334" y="2833.3333333333335">
+			</FB>
+			<FB Name="Eigenvalue2x2" Type="Eigenvalue" Comment="" x="5513.333333333334" y="2166.666666666667">
+			</FB>
+			<FB Name="CSV_WRITER_4" Type="CSV_WRITER_5" Comment="" x="9113.333333333334" y="2166.666666666667">
+				<Parameter Name="QI" Value="1"/>
+				<Parameter Name="FILE_NAME" Value="H:\Skripsi\5. Data\Output\EllipseFitting_192.csv"/>
+			</FB>
+			<FB Name="Konstanta_2" Type="Konstanta" Comment="" x="4313.333333333334" y="2700.0">
+				<Parameter Name="L" Value="192"/>
+			</FB>
+			<FB Name="E_STOPWATCH" Type="E_STOPWATCH" Comment="" x="946.6666666666667" y="360.0">
+			</FB>
+			<EventConnections>
+				<Connection Source="F_STRING_TO_REAL.CNF" Destination="Konstanta.REQ" Comment="" dx1="353.33333333333337"/>
+				<Connection Source="Konstanta_2.INITO" Destination="c_bar.INIT" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="Konstanta_2.CNF" Destination="Eigenvalue2x2.REQ" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="Konstanta_2.CNF" Destination="c_bar.REQ" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="Detect_Stiction.INITO" Destination="CSV_WRITER_4.INIT" Comment="" dx1="406.6666666666667"/>
+				<Connection Source="F_STRING_TO_REAL.CNF" Destination="Konstanta_2.REQ" Comment="" dx1="226.66666666666669"/>
+				<Connection Source="op_mqtt_subscriber.IND" Destination="F_STRING_TO_REAL.REQ" Comment="" dx1="240.0"/>
+				<Connection Source="Detect_Stiction.CNF" Destination="CSV_WRITER_4.REQ" Comment="" dx1="406.6666666666667"/>
+				<Connection Source="Konstanta_2.INITO" Destination="Eigenvalue2x2.INIT" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="Eigenvector2x2.CNF" Destination="Detect_Stiction.REQ" Comment="" dx1="80.0" dx2="80.0" dy="-866.6666666666667"/>
+				<Connection Source="Eigenvector2x2.INITO" Destination="Detect_Stiction.INIT" Comment="" dx1="80.0" dx2="80.0" dy="-866.6666666666667"/>
+				<Connection Source="op_mqtt_subscriber.INITO" Destination="Konstanta.INIT" Comment="" dx1="1573.3333333333335"/>
+				<Connection Source="pv_mqtt_subscriber.IND" Destination="F_STRING_TO_REAL_1.REQ" Comment="" dx1="240.0"/>
+				<Connection Source="Eigenvalue2x2.CNF" Destination="Eigenvector2x2.REQ" Comment="" dx1="93.33333333333334"/>
+				<Connection Source="pv_mqtt_subscriber.INITO" Destination="Konstanta_2.INIT" Comment="" dx1="826.6666666666667"/>
+				<Connection Source="Eigenvalue2x2.INITO" Destination="Eigenvector2x2.INIT" Comment="" dx1="93.33333333333334"/>
+			</EventConnections>
+			<DataConnections>
+				<Connection Source="Detect_Stiction.x2" Destination="CSV_WRITER_4.SD_3" Comment="" dx1="373.33333333333337"/>
+				<Connection Source="Detect_Stiction.sud" Destination="CSV_WRITER_4.SD_2" Comment="" dx1="373.33333333333337"/>
+				<Connection Source="F_STRING_TO_REAL_1.OUT" Destination="Konstanta.pv" Comment="" dx1="353.33333333333337"/>
+				<Connection Source="Konstanta_2.const_3" Destination="c_bar.const_3" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="F_STRING_TO_REAL_1.OUT" Destination="Konstanta_2.pv" Comment="" dx1="226.66666666666669"/>
+				<Connection Source="Konstanta_2.const_2" Destination="c_bar.const_2" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="Konstanta_2.const_2" Destination="Eigenvector2x2.const_2" Comment="" dx1="1333.3333333333335"/>
+				<Connection Source="c_bar.c_bar" Destination="Detect_Stiction.c_bar" Comment="" dx1="826.6666666666667"/>
+				<Connection Source="Detect_Stiction.y2" Destination="CSV_WRITER_4.SD_4" Comment="" dx1="373.33333333333337"/>
+				<Connection Source="Konstanta_2.const_1" Destination="Eigenvector2x2.const_1" Comment="" dx1="1333.3333333333335"/>
+				<Connection Source="Konstanta_2.const_2" Destination="Eigenvalue2x2.const_2" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="op_mqtt_subscriber.RD_1" Destination="F_STRING_TO_REAL.IN" Comment="" dx1="240.0"/>
+				<Connection Source="Konstanta_2.const_5" Destination="c_bar.const_5" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="Konstanta_2.const_3" Destination="Eigenvector2x2.const_3" Comment="" dx1="1333.3333333333335"/>
+				<Connection Source="Eigenvalue2x2.val_2" Destination="Eigenvector2x2.val_2" Comment="" dx1="93.33333333333334"/>
+				<Connection Source="Konstanta_2.const_1" Destination="Eigenvalue2x2.const_1" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="Eigenvector2x2.vec_2" Destination="Detect_Stiction.vec_2" Comment="" dx1="80.0" dx2="80.0" dy="-766.6666666666667"/>
+				<Connection Source="F_STRING_TO_REAL.OUT" Destination="Konstanta_2.op" Comment="" dx1="226.66666666666669"/>
+				<Connection Source="pv_mqtt_subscriber.RD_1" Destination="F_STRING_TO_REAL_1.IN" Comment="" dx1="240.0"/>
+				<Connection Source="Eigenvalue2x2.val_1" Destination="Eigenvector2x2.val_1" Comment="" dx1="93.33333333333334"/>
+				<Connection Source="Konstanta_2.const_1" Destination="c_bar.const_1" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="Eigenvalue2x2.val_2" Destination="Detect_Stiction.val_2" Comment="" dx1="820.0"/>
+				<Connection Source="Detect_Stiction.Status" Destination="CSV_WRITER_4.SD_5" Comment="" dx1="406.6666666666667"/>
+				<Connection Source="Konstanta_2.const_3" Destination="Eigenvalue2x2.const_3" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="Konstanta_2.const_4" Destination="c_bar.const_4" Comment="" dx1="453.33333333333337"/>
+				<Connection Source="Detect_Stiction.St" Destination="CSV_WRITER_4.SD_1" Comment="" dx1="373.33333333333337"/>
+				<Connection Source="Eigenvalue2x2.val_1" Destination="Detect_Stiction.val_1" Comment="" dx1="820.0"/>
+				<Connection Source="F_STRING_TO_REAL.OUT" Destination="Konstanta.op" Comment="" dx1="353.33333333333337"/>
+			</DataConnections>
+		</SubAppNetwork>
+	</Application>
+	<Device Name="FORTE_PC" Type="FORTE_PC" Comment="" x="2813.3333333333335" y="1506.6666666666667">
+		<Parameter Name="MGR_ID" Value="&quot;localhost:61499&quot;"/>
+		<Attribute Name="Profile" Type="STRING" Value="HOLOBLOC" Comment="device profile"/>
+		<Attribute Name="Color" Type="STRING" Value="255,190,111" Comment="color"/>
+		<Resource Name="EMB_RES" Type="EMB_RES" Comment="" x="0.0" y="0.0">
+			<FBNetwork>
+				<FB Name="op_mqtt_subscriber" Type="SUBSCRIBE_1" Comment="" x="1200.0" y="666.6666666666667">
+					<Parameter Name="QI" Value="1"/>
+					<Parameter Name="ID" Value="raw[].mqtt[tcp://localhost:1883,forte,OP]"/>
+				</FB>
+				<FB Name="F_STRING_TO_REAL" Type="F_STRING_TO_REAL" Comment="" x="2266.666666666667" y="933.3333333333334">
+				</FB>
+				<FB Name="F_STRING_TO_REAL_1" Type="F_STRING_TO_REAL" Comment="" x="2266.666666666667" y="2133.3333333333335">
+				</FB>
+				<FB Name="pv_mqtt_subscriber" Type="SUBSCRIBE_1" Comment="" x="1200.0" y="1866.6666666666667">
+					<Parameter Name="QI" Value="1"/>
+					<Parameter Name="ID" Value="raw[].mqtt[tcp://localhost:1883,forte,PV]"/>
+				</FB>
+				<FB Name="EllipseFitting" Type="EllipseFitting" Comment="" x="4666.666666666667" y="1200.0">
+					<Parameter Name="L" Value="64"/>
+				</FB>
+				<FB Name="E_CTU" Type="E_CTU" Comment="" x="4266.666666666667" y="2533.3333333333335">
+					<Parameter Name="PV" Value="9000"/>
+				</FB>
+				<FB Name="CSV_WRITER_3" Type="CSV_WRITER_3" Comment="" x="8000.0" y="2000.0">
+					<Parameter Name="QI" Value="1"/>
+				</FB>
+				<FB Name="E_STOPWATCH" Type="E_STOPWATCH" Comment="" x="4666.666666666667" y="266.6666666666667">
+				</FB>
+				<EventConnections>
+					<Connection Source="op_mqtt_subscriber.IND" Destination="F_STRING_TO_REAL.REQ" Comment="" dx1="160.0"/>
+					<Connection Source="pv_mqtt_subscriber.IND" Destination="F_STRING_TO_REAL_1.REQ" Comment="" dx1="160.0"/>
+					<Connection Source="op_mqtt_subscriber.INITO" Destination="EllipseFitting.INIT" Comment="" dx1="1360.0"/>
+					<Connection Source="F_STRING_TO_REAL_1.CNF" Destination="E_CTU.CU" Comment="" dx1="546.6666666666667"/>
+					<Connection Source="EllipseFitting.INITO" Destination="CSV_WRITER_3.INIT" Comment="" dx1="1260.0"/>
+					<Connection Source="E_CTU.CUO" Destination="CSV_WRITER_3.REQ" Comment="" dx1="1673.3333333333335"/>
+					<Connection Source="START.COLD" Destination="op_mqtt_subscriber.INIT" Comment="" dx1="300.0"/>
+					<Connection Source="START.WARM" Destination="op_mqtt_subscriber.INIT" Comment="" dx1="300.0"/>
+					<Connection Source="START.COLD" Destination="op_mqtt_subscriber.RSP" Comment="" dx1="300.0"/>
+					<Connection Source="START.WARM" Destination="op_mqtt_subscriber.RSP" Comment="" dx1="300.0"/>
+					<Connection Source="START.WARM" Destination="pv_mqtt_subscriber.INIT" Comment="" dx1="300.0"/>
+					<Connection Source="START.COLD" Destination="pv_mqtt_subscriber.INIT" Comment="" dx1="300.0"/>
+					<Connection Source="START.WARM" Destination="pv_mqtt_subscriber.RSP" Comment="" dx1="300.0"/>
+					<Connection Source="START.COLD" Destination="pv_mqtt_subscriber.RSP" Comment="" dx1="300.0"/>
+					<Connection Source="F_STRING_TO_REAL.CNF" Destination="E_STOPWATCH.START" Comment=""/>
+					<Connection Source="EllipseFitting.CNF" Destination="E_STOPWATCH.STOP" Comment=""/>
+					<Connection Source="F_STRING_TO_REAL.CNF" Destination="EllipseFitting.REQ" Comment=""/>
+				</EventConnections>
+				<DataConnections>
+					<Connection Source="op_mqtt_subscriber.RD_1" Destination="F_STRING_TO_REAL.IN" Comment="" dx1="160.0"/>
+					<Connection Source="pv_mqtt_subscriber.RD_1" Destination="F_STRING_TO_REAL_1.IN" Comment="" dx1="160.0"/>
+					<Connection Source="F_STRING_TO_REAL.OUT" Destination="EllipseFitting.OP" Comment="" dx1="746.6666666666667"/>
+					<Connection Source="F_STRING_TO_REAL_1.OUT" Destination="EllipseFitting.PV" Comment="" dx1="746.6666666666667"/>
+					<Connection Source="EllipseFitting.STATUS" Destination="CSV_WRITER_3.SD_3" Comment="" dx1="1260.0"/>
+					<Connection Source="E_CTU.CV" Destination="CSV_WRITER_3.SD_1" Comment="" dx1="1673.3333333333335"/>
+					<Connection Source="E_STOPWATCH.TD" Destination="CSV_WRITER_3.SD_2" Comment=""/>
+				</DataConnections>
+			</FBNetwork>
+		</Resource>
+	</Device>
+	<Mapping From="EllipseFittingApp.op_mqtt_subscriber" To="FORTE_PC.EMB_RES.op_mqtt_subscriber"/>
+	<Mapping From="EllipseFittingApp.F_STRING_TO_REAL" To="FORTE_PC.EMB_RES.F_STRING_TO_REAL"/>
+	<Mapping From="EllipseFittingApp.F_STRING_TO_REAL_1" To="FORTE_PC.EMB_RES.F_STRING_TO_REAL_1"/>
+	<Mapping From="EllipseFittingApp.pv_mqtt_subscriber" To="FORTE_PC.EMB_RES.pv_mqtt_subscriber"/>
+	<Mapping From="EllipseFittingApp.EllipseFitting" To="FORTE_PC.EMB_RES.EllipseFitting"/>
+	<Mapping From="EllipseFittingApp.E_CTU" To="FORTE_PC.EMB_RES.E_CTU"/>
+	<Mapping From="EllipseFittingApp.CSV_WRITER_3" To="FORTE_PC.EMB_RES.CSV_WRITER_3"/>
+	<Mapping From="EllipseFittingApp.E_STOPWATCH" To="FORTE_PC.EMB_RES.E_STOPWATCH"/>
+	<Segment Name="Ethernet" Type="Ethernet" Comment="" x="2266.666666666667" y="533.3333333333334" dx1="1740.0">
+		<Attribute Name="Color" Type="STRING" Value="142,81,206" Comment="color"/>
+	</Segment>
+	<Link SegmentName="Ethernet" CommResource="FORTE_PC" Comment="">
+	</Link>
+</System>

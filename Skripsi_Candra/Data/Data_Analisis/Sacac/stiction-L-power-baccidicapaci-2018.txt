@@ -1,0 +1,15 @@
+File: stiction-L-power-baccidicapaci-2018.csv
+
+Type of measurement: Level
+Industry: Power
+Data length: 8641
+
+Sampling rate: 5 seconds
+
+Company: Anonymous
+
+Normalised: No
+Contributor: R. Bacci di Capaci, University of Pisa (original data are from S. Choudhury & S. Shah, University of Alberta)
+Year of origin: Unknown (2018 is the year of data restyling) 
+First appearance in publication: Unknown
+Description: This is an example of valve stiction in a power plant.

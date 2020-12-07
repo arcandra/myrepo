@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="EllipseFitting" Comment="Composite FB wrapping other FBs">
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="Administrator" Date="2020-08-26">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request">
+				<With Var="L"/>
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="Normal Execution Request">
+				<With Var="OP"/>
+				<With Var="PV"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="Execution Confirmation">
+				<With Var="STATUS"/>
+				<With Var="St"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="L" Type="INT" Comment=""/>
+			<VarDeclaration Name="OP" Type="REAL" Comment="Input event qualifier"/>
+			<VarDeclaration Name="PV" Type="REAL" Comment=""/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="STATUS" Type="BOOL" Comment="Output event qualifier"/>
+			<VarDeclaration Name="St" Type="REAL" Comment=""/>
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="c_bar" Type="c_bar" Comment="" x="3733.3333333333335" y="-666.6666666666667">
+		</FB>
+		<FB Name="Eigenvalue2x2" Type="Eigenvalue2x2" Comment="" x="3733.3333333333335" y="533.3333333333334">
+		</FB>
+		<FB Name="Eigenvector2x2" Type="Eigenvector2x2" Comment="" x="5200.0" y="1466.6666666666667">
+		</FB>
+		<FB Name="Konstanta" Type="Konstanta" Comment="" x="1333.3333333333335" y="-933.3333333333334">
+		</FB>
+		<FB Name="Konstanta_2" Type="Konstanta_2" Comment="" x="1200.0" y="300.0">
+		</FB>
+		<FB Name="Detect_Stiction" Type="Detect_Stiction" Comment="" x="6400.0" y="0.0">
+		</FB>
+		<EventConnections>
+			<Connection Source="Konstanta_2.CNF" Destination="Eigenvalue2x2.REQ" Comment="" dx1="733.3333333333334"/>
+			<Connection Source="Eigenvalue2x2.CNF" Destination="Eigenvector2x2.REQ" Comment="" dx1="93.33333333333334"/>
+			<Connection Source="Konstanta_2.INITO" Destination="c_bar.INIT" Comment="" dx1="600.0"/>
+			<Connection Source="Eigenvector2x2.INITO" Destination="Detect_Stiction.INIT" Comment="" dx1="193.33333333333334"/>
+			<Connection Source="Konstanta_2.INITO" Destination="Eigenvalue2x2.INIT" Comment="" dx1="733.3333333333334"/>
+			<Connection Source="Eigenvalue2x2.INITO" Destination="Eigenvector2x2.INIT" Comment="" dx1="93.33333333333334"/>
+			<Connection Source="Eigenvector2x2.CNF" Destination="Detect_Stiction.REQ" Comment="" dx1="260.0"/>
+			<Connection Source="Konstanta_2.CNF" Destination="c_bar.REQ" Comment="" dx1="600.0"/>
+			<Connection Source="Detect_Stiction.INITO" Destination="INITO" Comment="" dx1="500.0"/>
+			<Connection Source="Detect_Stiction.CNF" Destination="CNF" Comment="" dx1="500.0"/>
+			<Connection Source="REQ" Destination="Konstanta_2.REQ" Comment="" dx1="480.0"/>
+			<Connection Source="INIT" Destination="Konstanta_2.INIT" Comment="" dx1="480.0"/>
+			<Connection Source="REQ" Destination="Konstanta.REQ" Comment="" dx1="546.6666666666667"/>
+			<Connection Source="INIT" Destination="Konstanta.INIT" Comment="" dx1="546.6666666666667"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="Konstanta_2.const_3" Destination="c_bar.const_3" Comment="" dx1="600.0"/>
+			<Connection Source="Konstanta_2.const_1" Destination="c_bar.const_1" Comment="" dx1="600.0"/>
+			<Connection Source="Konstanta_2.const_3" Destination="Eigenvector2x2.const_3" Comment="" dx1="1333.3333333333335"/>
+			<Connection Source="Konstanta_2.const_2" Destination="Eigenvalue2x2.const_2" Comment="" dx1="733.3333333333334"/>
+			<Connection Source="Konstanta_2.const_3" Destination="Eigenvalue2x2.const_3" Comment="" dx1="733.3333333333334"/>
+			<Connection Source="Eigenvalue2x2.val_2" Destination="Eigenvector2x2.val_2" Comment="" dx1="93.33333333333334"/>
+			<Connection Source="Eigenvalue2x2.val_1" Destination="Eigenvector2x2.val_1" Comment="" dx1="93.33333333333334"/>
+			<Connection Source="Konstanta_2.const_2" Destination="Eigenvector2x2.const_2" Comment="" dx1="1333.3333333333335"/>
+			<Connection Source="c_bar.c_bar" Destination="Detect_Stiction.c_bar" Comment="" dx1="826.6666666666667"/>
+			<Connection Source="Konstanta_2.const_5" Destination="c_bar.const_5" Comment="" dx1="600.0"/>
+			<Connection Source="Konstanta_2.const_4" Destination="c_bar.const_4" Comment="" dx1="600.0"/>
+			<Connection Source="Konstanta_2.const_1" Destination="Eigenvalue2x2.const_1" Comment="" dx1="733.3333333333334"/>
+			<Connection Source="Konstanta_2.const_1" Destination="Eigenvector2x2.const_1" Comment="" dx1="1333.3333333333335"/>
+			<Connection Source="Eigenvalue2x2.val_1" Destination="Detect_Stiction.val_1" Comment="" dx1="820.0"/>
+			<Connection Source="Konstanta_2.const_2" Destination="c_bar.const_2" Comment="" dx1="600.0"/>
+			<Connection Source="Eigenvector2x2.vec_2" Destination="Detect_Stiction.vec_2" Comment="" dx1="320.0"/>
+			<Connection Source="Eigenvalue2x2.val_2" Destination="Detect_Stiction.val_2" Comment="" dx1="820.0"/>
+			<Connection Source="L" Destination="Konstanta_2.L" Comment="" dx1="480.0"/>
+			<Connection Source="OP" Destination="Konstanta_2.op" Comment="" dx1="480.0"/>
+			<Connection Source="PV" Destination="Konstanta_2.pv" Comment="" dx1="480.0"/>
+			<Connection Source="OP" Destination="Konstanta.op" Comment="" dx1="480.0"/>
+			<Connection Source="PV" Destination="Konstanta.pv" Comment="" dx1="480.0"/>
+			<Connection Source="Detect_Stiction.Status" Destination="STATUS" Comment="" dx1="500.0"/>
+			<Connection Source="Detect_Stiction.St" Destination="St" Comment="" dx1="500.0"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

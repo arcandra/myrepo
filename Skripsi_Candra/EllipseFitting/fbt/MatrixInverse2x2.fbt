@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="MatrixInverse2x2" Comment="Basic FB with empty ECC">
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Organization="UGM" Version="1.0" Author="Candra Wardaya" Date="2020-07-23">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initial Input">
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="Execution Request">
+				<With Var="ai"/>
+				<With Var="bi"/>
+				<With Var="ci"/>
+				<With Var="di"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initial Output">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="Confirmation">
+				<With Var="ao"/>
+				<With Var="bo"/>
+				<With Var="co"/>
+				<With Var="d_o"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ai" Type="REAL" Comment="Single real input"/>
+			<VarDeclaration Name="bi" Type="REAL" Comment="Single real input"/>
+			<VarDeclaration Name="ci" Type="REAL" Comment="Single real input"/>
+			<VarDeclaration Name="di" Type="REAL" Comment="Single real input"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="ao" Type="REAL" Comment="Single real output"/>
+			<VarDeclaration Name="bo" Type="REAL" Comment="Single real output"/>
+			<VarDeclaration Name="co" Type="REAL" Comment="Single real output"/>
+			<VarDeclaration Name="d_o" Type="REAL" Comment="Single real output"/>
+		</OutputVars>
+	</InterfaceList>
+	<BasicFB>
+		<InternalVars>
+			<VarDeclaration Name="det" Type="REAL" Comment="Determinant" InitialValue=""/>
+		</InternalVars>
+		<ECC>
+			<ECState Name="START" Comment="Initial State" x="546.6666666666667" y="420.0">
+			</ECState>
+			<ECState Name="Initialization" Comment="" x="2200.0" y="206.66666666666669">
+				<ECAction Algorithm="Initialise" Output="INITO"/>
+			</ECState>
+			<ECState Name="Calculation" Comment="" x="2266.666666666667" y="933.3333333333334">
+				<ECAction Algorithm="Calculate" Output="CNF"/>
+			</ECState>
+			<ECTransition Source="START" Destination="Initialization" Condition="INIT" Comment="" x="1420.0" y="173.33333333333334"/>
+			<ECTransition Source="Initialization" Destination="START" Condition="1" Comment="" x="1513.3333333333335" y="506.6666666666667"/>
+			<ECTransition Source="START" Destination="Calculation" Condition="REQ" Comment="" x="1886.6666666666667" y="713.3333333333334"/>
+			<ECTransition Source="Calculation" Destination="START" Condition="1" Comment="" x="1393.3333333333335" y="920.0"/>
+		</ECC>
+		<Algorithm Name="Calculate" Comment="New Algorithm">
+			<ST><![CDATA[det := 1/(ai*di - ci*bi);  //determinant
+
+ao := di*det;
+bo := -bi*det;
+co := -ci*det;
+d_o := ai*det;]]></ST>
+		</Algorithm>
+		<Algorithm Name="Initialise" Comment="New Algorithm">
+			<ST><![CDATA[]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="c_bar_in" Comment="Basic FB with empty ECC">
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="Administrator" Date="2020-08-20">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="">
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="">
+				<With Var="ai"/>
+				<With Var="bi"/>
+				<With Var="ci"/>
+				<With Var="x"/>
+				<With Var="di"/>
+				<With Var="y"/>
+				<With Var="const_5"/>
+				<With Var="const_4"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="">
+				<With Var="c_bar"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ai" Type="REAL" Comment=""/>
+			<VarDeclaration Name="bi" Type="REAL" Comment=""/>
+			<VarDeclaration Name="ci" Type="REAL" Comment=""/>
+			<VarDeclaration Name="di" Type="REAL" Comment=""/>
+			<VarDeclaration Name="x" Type="REAL" Comment=""/>
+			<VarDeclaration Name="y" Type="REAL" Comment=""/>
+			<VarDeclaration Name="const_4" Type="REAL" Comment=""/>
+			<VarDeclaration Name="const_5" Type="REAL" Comment=""/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="c_bar" Type="REAL" Comment=""/>
+		</OutputVars>
+	</InterfaceList>
+	<BasicFB>
+		<InternalVars>
+			<VarDeclaration Name="x2" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="y2" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="A" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="B" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="C" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+		</InternalVars>
+		<ECC>
+			<ECState Name="START" Comment="Initial State" x="133.33333333333334" y="533.3333333333334">
+			</ECState>
+			<ECState Name="Initialization" Comment="" x="1866.6666666666667" y="266.6666666666667">
+				<ECAction Algorithm="Initialize" Output="INITO"/>
+			</ECState>
+			<ECState Name="Calculation" Comment="" x="1540.0" y="933.3333333333334">
+				<ECAction Algorithm="Calculate" Output="CNF"/>
+			</ECState>
+			<ECTransition Source="START" Destination="Initialization" Condition="INIT" Comment="" x="1066.6666666666667" y="246.66666666666669"/>
+			<ECTransition Source="Initialization" Destination="START" Condition="1" Comment="" x="1220.0" y="606.6666666666667"/>
+			<ECTransition Source="START" Destination="Calculation" Condition="REQ" Comment="" x="1140.0" y="713.3333333333334"/>
+			<ECTransition Source="Calculation" Destination="START" Condition="1" Comment="" x="886.6666666666667" y="893.3333333333334"/>
+		</ECC>
+		<Algorithm Name="Initialize" Comment="New Algorithm">
+			<ST><![CDATA[]]></ST>
+		</Algorithm>
+		<Algorithm Name="Calculate" Comment="New Algorithm">
+			<ST><![CDATA[//A
+x2 := x*ai + y*ci;
+y2 := x*bi + y*di;
+
+A := x2*x + y2*y;
+
+//B
+B := const_4*x + const_5*y;
+
+//C = -1
+
+//
+c_bar := A + B -1;]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

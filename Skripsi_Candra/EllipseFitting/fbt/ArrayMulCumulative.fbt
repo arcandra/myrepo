@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="ArrayMulCumulative" Comment="Basic FB with empty ECC">
+	<Identification Standard="61499-2" Function="Multiplying two arrays and sum it all">
+	</Identification>
+	<VersionInfo Organization="UGM" Version="1.0" Author="Candra Wardaya" Date="2020-07-22">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initial Input">
+				<With Var="LI"/>
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="Normal Request of Execution">
+				<With Var="LI"/>
+				<With Var="X1"/>
+				<With Var="X2"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initial Output">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="Confirmation of Execution">
+				<With Var="Xo"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="LI" Type="INT" Comment="Array Length Input"/>
+			<VarDeclaration Name="X1" Type="REAL" Comment="Array Input 1" ArraySize="512"/>
+			<VarDeclaration Name="X2" Type="REAL" Comment="Array Input 2" ArraySize="512"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Xo" Type="REAL" Comment=""/>
+		</OutputVars>
+	</InterfaceList>
+	<BasicFB>
+		<InternalVars>
+			<VarDeclaration Name="i" Type="INT" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="val" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+		</InternalVars>
+		<ECC>
+			<ECState Name="START" Comment="Initial State" x="533.3333333333334" y="800.0">
+			</ECState>
+			<ECState Name="Initialization" Comment="" x="1933.3333333333335" y="220.0">
+				<ECAction Algorithm="Initialise" Output="INITO"/>
+			</ECState>
+			<ECState Name="Calculation" Comment="" x="2260.0" y="1320.0">
+				<ECAction Algorithm="Calculate" Output="CNF"/>
+			</ECState>
+			<ECTransition Source="START" Destination="Initialization" Condition="INIT" Comment="" x="1833.3333333333335" y="766.6666666666667"/>
+			<ECTransition Source="Initialization" Destination="START" Condition="1" Comment="" x="1293.3333333333335" y="420.0"/>
+			<ECTransition Source="START" Destination="Calculation" Condition="REQ" Comment="" x="1973.3333333333335" y="1073.3333333333335"/>
+			<ECTransition Source="Calculation" Destination="START" Condition="1" Comment="" x="1266.6666666666667" y="1313.3333333333335"/>
+		</ECC>
+		<Algorithm Name="Initialise" Comment="New Algorithm">
+			<ST><![CDATA[]]></ST>
+		</Algorithm>
+		<Algorithm Name="Calculate" Comment="New Algorithm">
+			<ST><![CDATA[val :=0;
+for i:=0 to LI-1 do
+	val := val + X1[i]*X2[i];
+end_for;
+Xo := val;]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

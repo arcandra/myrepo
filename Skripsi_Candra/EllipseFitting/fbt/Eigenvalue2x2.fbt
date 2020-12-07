@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="Eigenvalue2x2" Comment="Composite FB wrapping other FBs">
+	<Identification Standard="61499-2" Description="Part of ellipse fitting method, to find eigenvalue. This block are specifically in use of ellipse fitting method, which doesn&apos;t generally exported." >
+	</Identification>
+	<VersionInfo Organization="UGM" Version="1.0" Author="Candra Wardaya" Date="2020-08-19">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request">
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="Normal Execution Request">
+				<With Var="const_1"/>
+				<With Var="const_2"/>
+				<With Var="const_3"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="Execution Confirmation">
+				<With Var="val_1"/>
+				<With Var="val_2"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="const_1" Type="REAL" Comment="Single Real Input"/>
+			<VarDeclaration Name="const_2" Type="REAL" Comment="Single Real Input"/>
+			<VarDeclaration Name="const_3" Type="REAL" Comment="Single Real Input"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="val_1" Type="REAL" Comment="Single Real Output"/>
+			<VarDeclaration Name="val_2" Type="REAL" Comment=""/>
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="Real_Half" Type="Real_Half" Comment="" x="1200.0" y="0.0">
+		</FB>
+		<FB Name="eigval_in" Type="eigval_in" Comment="" x="2533.3333333333335" y="-133.33333333333334">
+		</FB>
+		<EventConnections>
+			<Connection Source="REQ" Destination="Real_Half.REQ" Comment="" dx1="200.0"/>
+			<Connection Source="INIT" Destination="Real_Half.INIT" Comment="" dx1="200.0"/>
+			<Connection Source="Real_Half.INITO" Destination="eigval_in.INIT" Comment="" dx1="380.0"/>
+			<Connection Source="Real_Half.CNF" Destination="eigval_in.REQ" Comment="" dx1="380.0"/>
+			<Connection Source="eigval_in.INITO" Destination="INITO" Comment="" dx1="2186.666666666667"/>
+			<Connection Source="eigval_in.CNF" Destination="CNF" Comment="" dx1="2186.666666666667"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="const_3" Destination="Real_Half.Xi" Comment="" dx1="200.0"/>
+			<Connection Source="const_1" Destination="eigval_in.ai" Comment="" dx1="1073.3333333333335"/>
+			<Connection Source="Real_Half.Xo" Destination="eigval_in.bi" Comment="" dx1="380.0"/>
+			<Connection Source="Real_Half.Xo" Destination="eigval_in.ci" Comment="" dx1="380.0"/>
+			<Connection Source="const_2" Destination="eigval_in.di" Comment="" dx1="1073.3333333333335"/>
+			<Connection Source="eigval_in.val_1" Destination="val_1" Comment="" dx1="2186.666666666667"/>
+			<Connection Source="eigval_in.val_2" Destination="val_2" Comment="" dx1="2186.666666666667"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="Matrix_Inverse" Comment="Template for a simple Basic Function Block Type">
+	<Identification Standard="61499-2" Description="Calculates an Inverse of a matrix useing Gauss Jordan Elimination Method." >
+	</Identification>
+	<VersionInfo Version="1.0" Author="Hafiezd" Date="2020-08-06">
+	</VersionInfo>
+	<VersionInfo Version="1.1" Author="Candra Wardaya" Date="2020-08-12">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request">
+				<With Var="A1"/>
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="Normal Execution Request">
+				<With Var="A1"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm">
+				<With Var="AO"/>
+				<With Var="p2"/>
+				<With Var="c2"/>
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="Execution Confirmation">
+				<With Var="AO"/>
+				<With Var="p2"/>
+				<With Var="c2"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="A1" Type="REAL" Comment="Matrix Array Input" ArraySize="25" InitialValue=""/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="p2" Type="UINT" Comment="Output Row Size"/>
+			<VarDeclaration Name="c2" Type="UINT" Comment="Output Column Size"/>
+			<VarDeclaration Name="AO" Type="REAL" Comment="Matrix Inverse Output Array" ArraySize="25"/>
+		</OutputVars>
+	</InterfaceList>
+	<BasicFB>
+		<InternalVars>
+			<VarDeclaration Name="i" Type="UINT" Comment="Row Index" InitialValue=""/>
+			<VarDeclaration Name="j" Type="UINT" Comment="Column Index" InitialValue=""/>
+			<VarDeclaration Name="c1" Type="UINT" Comment="Augmented Column Size" InitialValue=""/>
+			<VarDeclaration Name="B" Type="REAL" Comment="Augmented Matrix of p * c_aug size" ArraySize="100" InitialValue=""/>
+			<VarDeclaration Name="ratio" Type="REAL" Comment="zero-ing factor" InitialValue=""/>
+			<VarDeclaration Name="k" Type="UINT" Comment="Augmented Column Index" InitialValue=""/>
+			<VarDeclaration Name="divisor" Type="REAL" Comment="Identity factor" InitialValue=""/>
+			<VarDeclaration Name="p" Type="UINT" Comment="Internal Variable" InitialValue="5"/>
+			<VarDeclaration Name="c" Type="UINT" Comment="Internal Variable" InitialValue="5"/>
+		</InternalVars>
+		<ECC>
+			<ECState Name="START" Comment="Initial State" x="473.33333333333337" y="1120.0">
+			</ECState>
+			<ECState Name="CHECK" Comment="" x="1333.3333333333335" y="533.3333333333334">
+				<ECAction Algorithm="Define_New_Size" Output="INITO"/>
+			</ECState>
+			<ECState Name="CALCULATE" Comment="" x="2000.0" y="933.3333333333334">
+				<ECAction Algorithm="Gauss_jordan_elimination" Output="CNF"/>
+			</ECState>
+			<ECTransition Source="START" Destination="CHECK" Condition="INIT" Comment="" x="1060.0" y="786.6666666666667"/>
+			<ECTransition Source="CHECK" Destination="START" Condition="1" Comment="" x="1133.3333333333335" y="993.3333333333334"/>
+			<ECTransition Source="START" Destination="CALCULATE" Condition="REQ" Comment="" x="1193.3333333333335" y="1306.6666666666667"/>
+			<ECTransition Source="CALCULATE" Destination="START" Condition="1" Comment="" x="966.6666666666667" y="1593.3333333333335"/>
+		</ECC>
+		<Algorithm Name="Define_New_Size" Comment="new algorithm">
+			<ST><![CDATA[c2 := c;
+p2 := p;
+c1 := c*2;]]></ST>
+		</Algorithm>
+		<Algorithm Name="Gauss_jordan_elimination" Comment="new algorithm">
+			<ST><![CDATA[for i :=1 to c by 1 do  																								/*Start Matrix augmentation */
+
+	for j :=1 to c1 by 1 do
+	
+		if i =1 AND j <=c then
+			B[c1*i+j-(c1+1)] := A1[c1*i+j-(c1+1)];  //input nilai
+		
+		elsif i >1 AND j <=c then
+			B[c1*i+j-(c1+1)] := A1[c1*i+j-(c1+1)-(i-1)*(c1-c)];
+		
+		else
+		// matrix identitas
+			if i = j-c then
+				B[c1*i+j-(c1+1)] := 1;
+			else
+				B[c1*i+j-(c1+1)] := 0;
+			end_if;
+			
+		end_if;
+		
+	end_for;
+	
+end_for; 																													/*End Matrix augmentation */
+
+for i := 1 to c by 1 do 																								/*Start Gauss Jordan Elimination */
+	for j := 1 to c by 1 do
+		if i <> j then
+			ratio := B[(j-1)*c1+(i-1)] / B[i*c1-c1+i-1];
+			
+			for k := 1 to c1 by 1 do
+				B[c1*j+k-(c1+1)] := B[c1*j+k-(c1+1)] - ratio * B[c1*i+k-(c1+1)];
+			end_for;
+			
+		end_if;
+	end_for;
+end_for; 																													/*End Gauss Jordan Elimination */
+
+for i := 1 to c by 1 do 																								/*Start Row Operation */
+	divisor := B[i*c1-c1+(i-1)];
+	
+	for j := 1 to c1 by 1 do
+		B[c1*i+j-(c1+1)] := B[c1*i+j-(c1+1)] / divisor;
+	end_for;
+
+end_for; 																													/*End Row Operation */
+
+for i := 1 to p2 by 1 do 																							/*Output Matrix Inverse Mapping*/
+
+	for j := 1 to c2 by 1 do 
+		AO[c2*i+j-(c2+1)] := B[c2*i+j-(c2+1)+c2*i];
+	end_for;
+	
+end_for;]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

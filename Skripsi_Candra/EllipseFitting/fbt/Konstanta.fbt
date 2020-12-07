@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="Konstanta" Comment="Composite FB wrapping other FBs">
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Organization="UGM" Version="1.0" Author="Candra Wardaya" Date="2020-08-06">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request">
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="Normal Execution Request">
+				<With Var="op"/>
+				<With Var="pv"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="Execution Confirmation">
+				<With Var="const_a"/>
+				<With Var="const_b"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="op" Type="REAL" Comment="Controller Output Data"/>
+			<VarDeclaration Name="pv" Type="REAL" Comment="Process Variable Data"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="const_a" Type="REAL" Comment="Constant 1"/>
+			<VarDeclaration Name="const_b" Type="REAL" Comment="Constant 2"/>
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="d" Type="ArrayCumulativeSquared" Comment="" x="3466.666666666667" y="1200.0">
+		</FB>
+		<FB Name="x1_squared" Type="ArraySquared" Comment="" x="1200.0" y="800.0">
+			<Parameter Name="LI" Value="512"/>
+			<Parameter Name="Xi" Value="0"/>
+		</FB>
+		<FB Name="MatrixMulReal_v1" Type="MatrixMulReal_v1" Comment="" x="7066.666666666667" y="1333.3333333333335">
+		</FB>
+		<FB Name="a" Type="ArrayCumulativeSquared" Comment="" x="3333.3333333333335" y="-533.3333333333334">
+		</FB>
+		<FB Name="x2_cumulative" Type="ArrayCumulative" Comment="" x="3866.666666666667" y="3466.666666666667">
+		</FB>
+		<FB Name="Real_SqrtDenumerated_1" Type="Real_SqrtDenumerated" Comment="" x="8400.0" y="666.6666666666667">
+		</FB>
+		<FB Name="x1_cumulative" Type="ArrayCumulative" Comment="" x="3733.3333333333335" y="2666.666666666667">
+		</FB>
+		<FB Name="Real_SqrtDenumerated_2" Type="Real_SqrtDenumerated" Comment="" x="8400.0" y="-133.33333333333334">
+		</FB>
+		<FB Name="x2_squared" Type="ArraySquared" Comment="" x="1200.0" y="2266.666666666667">
+			<Parameter Name="LI" Value="512"/>
+			<Parameter Name="Xi" Value="0"/>
+		</FB>
+		<FB Name="b_dan_c" Type="ArrayMulCumulative" Comment="" x="3466.666666666667" y="266.6666666666667">
+		</FB>
+		<FB Name="MatrixInverse" Type="MatrixInverse2x2" Comment="" x="5600.0" y="400.0">
+		</FB>
+		<EventConnections>
+			<Connection Source="MatrixMulReal_v1.INITO" Destination="Real_SqrtDenumerated_2.INIT" Comment="" dx1="86.66666666666667"/>
+			<Connection Source="MatrixMulReal_v1.INITO" Destination="Real_SqrtDenumerated_1.INIT" Comment="" dx1="86.66666666666667"/>
+			<Connection Source="x1_squared.CNF" Destination="b_dan_c.REQ" Comment="" dx1="913.3333333333334"/>
+			<Connection Source="x1_squared.CNF" Destination="x1_cumulative.REQ" Comment="" dx1="980.0"/>
+			<Connection Source="x2_squared.INITO" Destination="x2_cumulative.INIT" Comment="" dx1="980.0"/>
+			<Connection Source="x1_squared.INITO" Destination="a.INIT" Comment="" dx1="713.3333333333334"/>
+			<Connection Source="x2_squared.CNF" Destination="b_dan_c.REQ" Comment="" dx1="913.3333333333334"/>
+			<Connection Source="x2_squared.CNF" Destination="x2_cumulative.REQ" Comment="" dx1="980.0"/>
+			<Connection Source="x1_squared.INITO" Destination="x1_cumulative.INIT" Comment="" dx1="980.0"/>
+			<Connection Source="MatrixMulReal_v1.CNF" Destination="Real_SqrtDenumerated_1.REQ" Comment="" dx1="86.66666666666667"/>
+			<Connection Source="x2_squared.CNF" Destination="d.REQ" Comment="" dx1="846.6666666666667"/>
+			<Connection Source="x2_squared.INITO" Destination="d.INIT" Comment="" dx1="846.6666666666667"/>
+			<Connection Source="x1_squared.INITO" Destination="b_dan_c.INIT" Comment="" dx1="913.3333333333334"/>
+			<Connection Source="x1_squared.CNF" Destination="a.REQ" Comment="" dx1="713.3333333333334"/>
+			<Connection Source="x2_squared.INITO" Destination="b_dan_c.INIT" Comment="" dx1="913.3333333333334"/>
+			<Connection Source="MatrixMulReal_v1.CNF" Destination="Real_SqrtDenumerated_2.REQ" Comment="" dx1="86.66666666666667"/>
+			<Connection Source="REQ" Destination="x1_squared.REQ" Comment="" dx1="480.0"/>
+			<Connection Source="INIT" Destination="x1_squared.INIT" Comment="" dx1="480.0"/>
+			<Connection Source="INIT" Destination="x2_squared.INIT" Comment="" dx1="480.0"/>
+			<Connection Source="REQ" Destination="x2_squared.REQ" Comment="" dx1="480.0"/>
+			<Connection Source="Real_SqrtDenumerated_2.INITO" Destination="INITO" Comment="" dx1="500.0"/>
+			<Connection Source="Real_SqrtDenumerated_2.CNF" Destination="CNF" Comment="" dx1="500.0"/>
+			<Connection Source="b_dan_c.INITO" Destination="MatrixInverse.INIT" Comment="" dx1="573.3333333333334"/>
+			<Connection Source="b_dan_c.CNF" Destination="MatrixInverse.REQ" Comment="" dx1="573.3333333333334"/>
+			<Connection Source="MatrixInverse.INITO" Destination="MatrixMulReal_v1.INIT" Comment="" dx1="486.6666666666667"/>
+			<Connection Source="MatrixInverse.CNF" Destination="MatrixMulReal_v1.REQ" Comment="" dx1="486.6666666666667"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="x2_squared.Xo" Destination="d.Xi" Comment="" dx1="1473.3333333333335"/>
+			<Connection Source="x1_squared.Xo" Destination="b_dan_c.X1" Comment="" dx1="913.3333333333334"/>
+			<Connection Source="x2_squared.Xo" Destination="x2_cumulative.Xi" Comment="" dx1="980.0"/>
+			<Connection Source="x2_squared.Xo" Destination="b_dan_c.X2" Comment="" dx1="1060.0"/>
+			<Connection Source="x1_squared.LO" Destination="a.LI" Comment="" dx1="713.3333333333334"/>
+			<Connection Source="x1_squared.Xo" Destination="a.Xi" Comment="" dx1="713.3333333333334"/>
+			<Connection Source="x2_squared.LO" Destination="d.LI" Comment="" dx1="1473.3333333333335"/>
+			<Connection Source="x1_cumulative.Xo" Destination="MatrixMulReal_v1.X1" Comment="" dx1="1373.3333333333335"/>
+			<Connection Source="x2_squared.LO" Destination="x1_cumulative.LI" Comment="" dx1="980.0"/>
+			<Connection Source="x2_squared.LO" Destination="x2_cumulative.LI" Comment="" dx1="980.0"/>
+			<Connection Source="x2_cumulative.Xo" Destination="MatrixMulReal_v1.X2" Comment="" dx1="1506.6666666666667"/>
+			<Connection Source="x1_squared.LO" Destination="b_dan_c.LI" Comment="" dx1="913.3333333333334"/>
+			<Connection Source="MatrixMulReal_v1.Xo1" Destination="Real_SqrtDenumerated_2.Xi" Comment="" dx1="86.66666666666667"/>
+			<Connection Source="MatrixMulReal_v1.Xo2" Destination="Real_SqrtDenumerated_1.Xi" Comment="" dx1="86.66666666666667"/>
+			<Connection Source="x1_squared.Xo" Destination="x1_cumulative.Xi" Comment="" dx1="1433.3333333333335"/>
+			<Connection Source="op" Destination="x1_squared.Xi" Comment="" dx1="480.0"/>
+			<Connection Source="pv" Destination="x2_squared.Xi" Comment="" dx1="480.0"/>
+			<Connection Source="Real_SqrtDenumerated_2.Xo" Destination="const_a" Comment="" dx1="500.0"/>
+			<Connection Source="Real_SqrtDenumerated_1.Xo" Destination="const_b" Comment="" dx1="500.0"/>
+			<Connection Source="a.Xo" Destination="MatrixInverse.ai" Comment="" dx1="546.6666666666667"/>
+			<Connection Source="b_dan_c.Xo" Destination="MatrixInverse.bi" Comment="" dx1="640.0"/>
+			<Connection Source="b_dan_c.Xo" Destination="MatrixInverse.ci" Comment="" dx1="640.0"/>
+			<Connection Source="d.Xo" Destination="MatrixInverse.di" Comment="" dx1="613.3333333333334"/>
+			<Connection Source="MatrixInverse.ao" Destination="MatrixMulReal_v1.ai" Comment="" dx1="486.6666666666667"/>
+			<Connection Source="MatrixInverse.bo" Destination="MatrixMulReal_v1.bi" Comment="" dx1="486.6666666666667"/>
+			<Connection Source="MatrixInverse.co" Destination="MatrixMulReal_v1.ci" Comment="" dx1="486.6666666666667"/>
+			<Connection Source="MatrixInverse.d_o" Destination="MatrixMulReal_v1.di" Comment="" dx1="486.6666666666667"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

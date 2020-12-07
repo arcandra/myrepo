@@ -1,0 +1,11 @@
+File: saturation—T-oilgas-Thornhill-2002.csv
+Type of measurement: Temperature
+Industry: Oil and gas
+Data length: 1441
+Sampling rate: 20 seconds
+Company: SE Asia refinery
+Normalised: Yes
+Contributor: Nina F. Thornhill, Imperial College London
+Year of origin: 2002
+First appearance in publication: Thornhill, N.F., Shah, S.L., Huang, B., and Vishnubhotla, A., 2002, Spectral principal component analysis of dynamic process data, Control Engineering Practice, 10, 833-846.
+Description: The data are from a hydrogen reformer unit belonging to a SE Asian refinery. A temperature controller of in the dataset showed quantisation problems. 

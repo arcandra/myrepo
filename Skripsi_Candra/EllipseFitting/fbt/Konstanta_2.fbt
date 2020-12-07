@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="Konstanta_2" Comment="Composite FB wrapping other FBs">
+	<Identification Standard="61499-2" Description="2nd constant finder of ellipse fitting stiction-detection method" >
+	</Identification>
+	<VersionInfo Organization="UGM" Version="1.0" Author="Candra Wardaya" Date="2020-08-15">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request">
+				<With Var="L"/>
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="Normal Execution Request">
+				<With Var="op"/>
+				<With Var="pv"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="Execution Confirmation">
+				<With Var="const_1"/>
+				<With Var="const_2"/>
+				<With Var="const_3"/>
+				<With Var="const_4"/>
+				<With Var="const_5"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="L" Type="INT" Comment="Array Length" InitialValue="512"/>
+			<VarDeclaration Name="op" Type="REAL" Comment="Controller Output Data"/>
+			<VarDeclaration Name="pv" Type="REAL" Comment="Process Variable Data"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="const_1" Type="REAL" Comment="Constant 1"/>
+			<VarDeclaration Name="const_2" Type="REAL" Comment="Constant 2"/>
+			<VarDeclaration Name="const_3" Type="REAL" Comment="Constant 3"/>
+			<VarDeclaration Name="const_4" Type="REAL" Comment="Constant 4"/>
+			<VarDeclaration Name="const_5" Type="REAL" Comment="Constant 5"/>
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="x2_sqrd_kumulatif_" Type="ArrayCumulative" Comment="" x="3333.3333333333335" y="1200.0">
+		</FB>
+		<FB Name="x1_sqrd_kumulatif" Type="ArrayCumulative" Comment="" x="3200.0" y="400.0">
+		</FB>
+		<FB Name="Real5_Array" Type="Real5_Array" Comment="" x="6000.0" y="1333.3333333333335">
+		</FB>
+		<FB Name="Real2_MatrixArray" Type="Real2_MatrixArray" Comment="" x="1600.0" y="-1466.6666666666667">
+		</FB>
+		<FB Name="x1x2_kumulatif" Type="ArrayMulCumulative" Comment="" x="3466.666666666667" y="2000.0">
+		</FB>
+		<FB Name="Matrix_Inverse" Type="Matrix_Inverse" Comment="" x="3866.666666666667" y="-800.0">
+		</FB>
+		<FB Name="ArrayMulCumulative_Real5" Type="ArrayMulCumulative_Real5" Comment="" x="6933.333333333334" y="266.6666666666667">
+		</FB>
+		<FB Name="x2_kumulatif" Type="ArrayCumulative" Comment="" x="3066.666666666667" y="4133.333333333334">
+		</FB>
+		<FB Name="x1_sqrd" Type="ArraySquared" Comment="" x="1200.0" y="400.0">
+		</FB>
+		<FB Name="x2_sqrd" Type="ArraySquared" Comment="" x="1200.0" y="1200.0">
+		</FB>
+		<FB Name="x1_kumulatif" Type="ArrayCumulative" Comment="" x="2933.3333333333335" y="3333.3333333333335">
+		</FB>
+		<FB Name="x1" Type="REAL_ARRAY" Comment="" x="800.0" y="2000.0">
+		</FB>
+		<FB Name="x2" Type="REAL_ARRAY" Comment="" x="800.0" y="2933.3333333333335">
+		</FB>
+		<EventConnections>
+			<Connection Source="x1_sqrd.CNF" Destination="x1_sqrd_kumulatif.REQ" Comment=""/>
+			<Connection Source="x1_sqrd_kumulatif.CNF" Destination="Real5_Array.REQ" Comment="" dx1="1106.6666666666667"/>
+			<Connection Source="Real5_Array.INITO" Destination="ArrayMulCumulative_Real5.INIT" Comment="" dx1="133.33333333333334"/>
+			<Connection Source="Real2_MatrixArray.INITO" Destination="Matrix_Inverse.INIT" Comment="" dx1="593.3333333333334"/>
+			<Connection Source="x2_sqrd.CNF" Destination="x2_sqrd_kumulatif_.REQ" Comment=""/>
+			<Connection Source="x1_sqrd.INITO" Destination="x1_sqrd_kumulatif.INIT" Comment=""/>
+			<Connection Source="Real2_MatrixArray.CNF" Destination="Matrix_Inverse.REQ" Comment="" dx1="593.3333333333334"/>
+			<Connection Source="Real5_Array.CNF" Destination="ArrayMulCumulative_Real5.REQ" Comment="" dx1="133.33333333333334"/>
+			<Connection Source="x2_sqrd.INITO" Destination="x2_sqrd_kumulatif_.INIT" Comment=""/>
+			<Connection Source="x1_sqrd_kumulatif.INITO" Destination="Real5_Array.INIT" Comment="" dx1="1106.6666666666667"/>
+			<Connection Source="INIT" Destination="Real2_MatrixArray.INIT" Comment="" dx1="680.0"/>
+			<Connection Source="INIT" Destination="x1_sqrd.INIT" Comment="" dx1="480.0"/>
+			<Connection Source="INIT" Destination="x2_sqrd.INIT" Comment="" dx1="480.0"/>
+			<Connection Source="REQ" Destination="x1_sqrd.REQ" Comment="" dx1="480.0"/>
+			<Connection Source="REQ" Destination="x2_sqrd.REQ" Comment="" dx1="480.0"/>
+			<Connection Source="REQ" Destination="Real2_MatrixArray.REQ" Comment="" dx1="680.0"/>
+			<Connection Source="ArrayMulCumulative_Real5.INITO" Destination="INITO" Comment="" dx1="500.0"/>
+			<Connection Source="ArrayMulCumulative_Real5.CNF" Destination="CNF" Comment="" dx1="500.0"/>
+			<Connection Source="INIT" Destination="x1.SET" Comment="" dx1="280.0"/>
+			<Connection Source="REQ" Destination="x1.REQ" Comment="" dx1="280.0"/>
+			<Connection Source="x1.SETO" Destination="x1_kumulatif.INIT" Comment="" dx1="640.0"/>
+			<Connection Source="x1.SETO" Destination="x1x2_kumulatif.INIT" Comment=""/>
+			<Connection Source="x1.CNF" Destination="x1_kumulatif.REQ" Comment="" dx1="640.0"/>
+			<Connection Source="x1.CNF" Destination="x1x2_kumulatif.REQ" Comment=""/>
+			<Connection Source="INIT" Destination="x2.SET" Comment="" dx1="280.0"/>
+			<Connection Source="REQ" Destination="x2.REQ" Comment="" dx1="280.0"/>
+			<Connection Source="x2.SETO" Destination="x2_kumulatif.INIT" Comment="" dx1="706.6666666666667"/>
+			<Connection Source="x2.CNF" Destination="x2_kumulatif.REQ" Comment="" dx1="706.6666666666667"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="x1_kumulatif.Xo" Destination="Real5_Array.A4" Comment="" dx1="1106.6666666666667"/>
+			<Connection Source="x2_sqrd_kumulatif_.Xo" Destination="Real5_Array.A2" Comment="" dx1="906.6666666666667"/>
+			<Connection Source="Real5_Array.AO" Destination="ArrayMulCumulative_Real5.Y" Comment="" dx1="186.66666666666669"/>
+			<Connection Source="Matrix_Inverse.AO" Destination="ArrayMulCumulative_Real5.X" Comment="" dx1="1193.3333333333335"/>
+			<Connection Source="x2_sqrd.Xo" Destination="x2_sqrd_kumulatif_.Xi" Comment=""/>
+			<Connection Source="Real2_MatrixArray.AO" Destination="Matrix_Inverse.A1" Comment="" dx1="593.3333333333334"/>
+			<Connection Source="x1x2_kumulatif.Xo" Destination="Real5_Array.A3" Comment="" dx1="906.6666666666667"/>
+			<Connection Source="x2_kumulatif.Xo" Destination="Real5_Array.A5" Comment="" dx1="1040.0"/>
+			<Connection Source="x1_sqrd.Xo" Destination="x1_sqrd_kumulatif.Xi" Comment=""/>
+			<Connection Source="x1_sqrd_kumulatif.Xo" Destination="Real5_Array.A1" Comment="" dx1="973.3333333333334"/>
+			<Connection Source="op" Destination="x1_sqrd.Xi" Comment="" dx1="480.0"/>
+			<Connection Source="pv" Destination="x2_sqrd.Xi" Comment="" dx1="480.0"/>
+			<Connection Source="op" Destination="Real2_MatrixArray.ai" Comment="" dx1="680.0"/>
+			<Connection Source="pv" Destination="Real2_MatrixArray.bi" Comment="" dx1="680.0"/>
+			<Connection Source="ArrayMulCumulative_Real5.o1" Destination="const_1" Comment="" dx1="500.0"/>
+			<Connection Source="ArrayMulCumulative_Real5.o2" Destination="const_2" Comment="" dx1="500.0"/>
+			<Connection Source="ArrayMulCumulative_Real5.o3" Destination="const_3" Comment="" dx1="500.0"/>
+			<Connection Source="ArrayMulCumulative_Real5.o4" Destination="const_4" Comment="" dx1="500.0"/>
+			<Connection Source="ArrayMulCumulative_Real5.o5" Destination="const_5" Comment="" dx1="500.0"/>
+			<Connection Source="L" Destination="x1_sqrd.LI" Comment="" dx1="480.0"/>
+			<Connection Source="L" Destination="x2_sqrd.LI" Comment="" dx1="480.0"/>
+			<Connection Source="x1_sqrd.LO" Destination="x1_sqrd_kumulatif.LI" Comment=""/>
+			<Connection Source="op" Destination="x1.Xi" Comment="" dx1="280.0"/>
+			<Connection Source="x1.Xo" Destination="x1_kumulatif.Xi" Comment="" dx1="673.3333333333334"/>
+			<Connection Source="x1.Xo" Destination="x1x2_kumulatif.X1" Comment=""/>
+			<Connection Source="pv" Destination="x2.Xi" Comment="" dx1="280.0"/>
+			<Connection Source="x2.Xo" Destination="x2_kumulatif.Xi" Comment="" dx1="233.33333333333334"/>
+			<Connection Source="x2.Xo" Destination="x1x2_kumulatif.X2" Comment="" dx1="640.0"/>
+			<Connection Source="L" Destination="x1.LI" Comment="" dx1="273.33333333333337"/>
+			<Connection Source="L" Destination="x2.LI" Comment="" dx1="273.33333333333337"/>
+			<Connection Source="x1.LO" Destination="x1_kumulatif.LI" Comment="" dx1="753.3333333333334"/>
+			<Connection Source="x2.LO" Destination="x2_kumulatif.LI" Comment="" dx1="820.0"/>
+			<Connection Source="x2.LO" Destination="x1x2_kumulatif.LI" Comment="" dx1="1020.0"/>
+			<Connection Source="x2.LO" Destination="x2_sqrd_kumulatif_.LI" Comment="" dx1="953.3333333333334"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

@@ -1,0 +1,11 @@
+File: other-F-paper-horch-2003-2.csv
+Type of measurement: Flow
+Industry: Pulp & paper
+Data length: 1196
+Sampling rate: 1 second
+Company: Anonymous
+Normalised: No
+Contributor: Alexander Hoch, HIMA Paul Hildebrandt GmbH
+Year of origin: 2003
+First appearance in publication: tbd
+Description: The flow loop shows stiction in the control valve. The PV range is 0-400 and the operating range 0-100%.

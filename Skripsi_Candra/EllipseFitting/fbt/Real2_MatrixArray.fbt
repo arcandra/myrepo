@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="Real2_MatrixArray" Comment="Basic FB with empty ECC">
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Organization="UGM" Version="1.0" Author="Candra Wardaya" Date="2020-08-10">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization">
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="Normal Request of Execution">
+				<With Var="ai"/>
+				<With Var="bi"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Output">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="Confirmation of Execution">
+				<With Var="AO"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="ai" Type="REAL" Comment="Single Real Input"/>
+			<VarDeclaration Name="bi" Type="REAL" Comment="Single Real Input"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="AO" Type="REAL" Comment="Array Input" ArraySize="25"/>
+		</OutputVars>
+	</InterfaceList>
+	<BasicFB>
+		<InternalVars>
+			<VarDeclaration Name="i" Type="INT" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="val" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+		</InternalVars>
+		<ECC>
+			<ECState Name="START" Comment="Initial State" x="546.6666666666667" y="420.0">
+			</ECState>
+			<ECState Name="Calculation" Comment="" x="1866.6666666666667" y="400.0">
+				<ECAction Algorithm="Calculate" Output="CNF"/>
+			</ECState>
+			<ECState Name="Initialization" Comment="" x="1373.3333333333335" y="1240.0">
+				<ECAction Algorithm="Initialize" Output="INITO"/>
+			</ECState>
+			<ECTransition Source="Calculation" Destination="START" Condition="1" Comment="" x="1426.6666666666667" y="726.6666666666667"/>
+			<ECTransition Source="START" Destination="Initialization" Condition="INIT" Comment="" x="1313.3333333333335" y="873.3333333333334"/>
+			<ECTransition Source="START" Destination="Calculation" Condition="REQ" Comment="" x="1326.6666666666667" y="326.6666666666667"/>
+			<ECTransition Source="Initialization" Destination="START" Condition="1" Comment="" x="1033.3333333333335" y="913.3333333333334"/>
+		</ECC>
+		<Algorithm Name="Calculate" Comment="New Algorithm">
+			<ST><![CDATA[AO[0] := AO[0] + EXPT(ai,4);
+AO[1] := AO[1] + (ai*ai)*(bi*bi);
+AO[2] := AO[2] + (ai*ai)*(ai*bi);
+AO[3] := AO[3] + (ai*ai)*ai; 
+AO[4] := AO[4] + (ai*ai)*bi; 
+AO[5] := AO[5] + (bi*bi)*(ai*ai); //[2][1]
+AO[6] := AO[6] + (bi*bi)*(bi*bi);
+AO[7] := AO[7] + (bi*bi)*(ai*bi);
+AO[8] := AO[8] + (bi*bi)*(ai);
+AO[9] := AO[9] + (bi*bi)*(bi);
+AO[10] := AO[10] + (ai*bi)*(ai*ai); //[3][1]
+AO[11] := AO[11] + (ai*bi)*(bi*bi);
+AO[12] := AO[12] + (ai*bi)*(ai*bi);
+AO[13] := AO[13] + (ai*bi)*(ai);
+AO[14] := AO[14] + (ai*bi)*(bi);
+AO[15] := AO[15] + (ai)*(ai*ai);//[4][1]
+AO[16] := AO[16] + (ai)*(bi*bi);
+AO[17] := AO[17] + (ai)*(ai*bi);
+AO[18] := AO[18] + (ai)*(ai);
+AO[19] := AO[19] + (ai)*(bi);
+AO[20] := AO[20] + (bi)*(ai*ai); //[5][1]
+AO[21] := AO[21] + (bi)*(bi*bi);
+AO[22] := AO[22] + (bi)*(ai*bi);
+AO[23] := AO[23] + (bi)*(ai);
+AO[24] := AO[24] + (bi)*(bi);]]></ST>
+		</Algorithm>
+		<Algorithm Name="Initialize" Comment="New Algorithm">
+			<ST><![CDATA[]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

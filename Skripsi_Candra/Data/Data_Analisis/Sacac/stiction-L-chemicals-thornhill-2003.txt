@@ -1,0 +1,11 @@
+File: stiction-L-chemicals-Thornhill-2003.csv
+Type of measurement: Level
+Industry: Chemicals
+Data length: 8640
+Sampling rate: 20 seconds
+Company: Eastman Chemical Company
+Normalised: Yes
+Contributor: Nina F. Thornhill, Imperial College London
+Year of origin: 2003
+First appearance in publication: Thornhill, N.F., Cox, J.W., and Paulonis, M., 2003, Diagnosis of plant-wide oscillation through data-driven analysis and process understanding, Control Engineering Practice, 11, 1481-1490.
+Description: The analysis in [1] showed that the level control loop LC2 had a sticking valve that caused the control loop to have a limit cycle oscillation. The disturbance caused by this control loop (Tag 22) propagated throughout the plant. A second disturbance is also present in Column 3 (Tags 23-28 and Tag 30) in the form of non-periodic transient excursions. It enters with the direct injection of steam into the column, and propagates from the bottom to the top of the column.

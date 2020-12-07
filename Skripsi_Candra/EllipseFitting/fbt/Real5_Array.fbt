@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="Real5_Array" Comment="Basic FB with empty ECC">
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Organization="UGM" Version="1.0" Author="Candra Wardaya" Date="2020-08-13">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initial Trigger">
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="Execution Request">
+				<With Var="A1"/>
+				<With Var="A2"/>
+				<With Var="A3"/>
+				<With Var="A4"/>
+				<With Var="A5"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Output Initialization">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="Confirmation of Execution">
+				<With Var="AO"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="A1" Type="REAL" Comment="Single Real Input"/>
+			<VarDeclaration Name="A2" Type="REAL" Comment="Single Real Input"/>
+			<VarDeclaration Name="A3" Type="REAL" Comment="Single Real Input"/>
+			<VarDeclaration Name="A4" Type="REAL" Comment="Single Real Input"/>
+			<VarDeclaration Name="A5" Type="REAL" Comment="Single Real Input"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="AO" Type="REAL" Comment="Array Output" ArraySize="5"/>
+		</OutputVars>
+	</InterfaceList>
+	<BasicFB>
+		<ECC>
+			<ECState Name="START" Comment="Initial State" x="546.6666666666667" y="420.0">
+			</ECState>
+			<ECState Name="Initialization" Comment="" x="2026.6666666666667" y="320.0">
+				<ECAction Algorithm="Initialize" Output="INITO"/>
+			</ECState>
+			<ECState Name="Addressing" Comment="" x="2100.0" y="1353.3333333333335">
+				<ECAction Algorithm="Address" Output="CNF"/>
+			</ECState>
+			<ECTransition Source="START" Destination="Initialization" Condition="INIT" Comment="" x="1353.3333333333335" y="220.0"/>
+			<ECTransition Source="Initialization" Destination="START" Condition="1" Comment="" x="1406.6666666666667" y="633.3333333333334"/>
+			<ECTransition Source="START" Destination="Addressing" Condition="REQ" Comment="" x="1633.3333333333335" y="833.3333333333334"/>
+			<ECTransition Source="Addressing" Destination="START" Condition="1" Comment="" x="1253.3333333333335" y="1266.6666666666667"/>
+		</ECC>
+		<Algorithm Name="Initialize" Comment="New Algorithm">
+			<ST><![CDATA[]]></ST>
+		</Algorithm>
+		<Algorithm Name="Address" Comment="New Algorithm">
+			<ST><![CDATA[AO[0] := A1;
+AO[1] := A2;
+AO[2] := A3;
+AO[3] := A4;
+AO[4] := A5;]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

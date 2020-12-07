@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="eigvec_in" Comment="Basic FB with empty ECC">
+	<Identification Standard="61499-2">
+	</Identification>
+	<VersionInfo Version="1.0" Author="Administrator" Date="2020-08-21">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="">
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="">
+				<With Var="val_1"/>
+				<With Var="val_2"/>
+				<With Var="ai"/>
+				<With Var="bi"/>
+				<With Var="ci"/>
+				<With Var="di"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="">
+				<With Var="vec_1"/>
+				<With Var="vec_2"/>
+				<With Var="vec_3"/>
+				<With Var="vec_4"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="val_1" Type="REAL" Comment=""/>
+			<VarDeclaration Name="val_2" Type="REAL" Comment=""/>
+			<VarDeclaration Name="ai" Type="REAL" Comment=""/>
+			<VarDeclaration Name="bi" Type="REAL" Comment=""/>
+			<VarDeclaration Name="ci" Type="REAL" Comment=""/>
+			<VarDeclaration Name="di" Type="REAL" Comment=""/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="vec_1" Type="REAL" Comment=""/>
+			<VarDeclaration Name="vec_2" Type="REAL" Comment=""/>
+			<VarDeclaration Name="vec_3" Type="REAL" Comment=""/>
+			<VarDeclaration Name="vec_4" Type="REAL" Comment=""/>
+		</OutputVars>
+	</InterfaceList>
+	<BasicFB>
+		<InternalVars>
+			<VarDeclaration Name="x1" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="x2" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="y1" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="y2" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="divisor" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="x" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="y" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="x1_2" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="x2_2" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="m1" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="m2" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="m3" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+			<VarDeclaration Name="m4" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+		</InternalVars>
+		<ECC>
+			<ECState Name="START" Comment="Initial State" x="400.0" y="666.6666666666667">
+			</ECState>
+			<ECState Name="Initialization" Comment="" x="2466.666666666667" y="240.0">
+				<ECAction Algorithm="Initialise" Output="INITO"/>
+			</ECState>
+			<ECState Name="Calculation" Comment="" x="1793.3333333333335" y="1206.6666666666667">
+				<ECAction Algorithm="Calculate" Output="CNF"/>
+			</ECState>
+			<ECTransition Source="Initialization" Destination="START" Condition="1" Comment="" x="1533.3333333333335" y="260.0"/>
+			<ECTransition Source="START" Destination="Initialization" Condition="INIT" Comment="" x="1646.6666666666667" y="540.0"/>
+			<ECTransition Source="Calculation" Destination="START" Condition="1" Comment="" x="1273.3333333333335" y="1026.6666666666667"/>
+			<ECTransition Source="START" Destination="Calculation" Condition="REQ" Comment="" x="1073.3333333333335" y="1213.3333333333335"/>
+		</ECC>
+		<Algorithm Name="Initialise" Comment="New Algorithm">
+			<ST><![CDATA[]]></ST>
+		</Algorithm>
+		<Algorithm Name="Calculate" Comment="New Algorithm">
+			<ST><![CDATA[x1 := ai-val_1;
+x2 := bi;
+y1 := ci;
+y2 := di-val_2;
+
+x1_2 := EXPT(x1,2);
+x2_2 := EXPT(x2,2);
+
+x := x1_2 + x2_2;
+
+divisor := SQRT(x);
+
+///
+
+IF  (bi>0) and (di<0) and (ai>0) and ( ABS(di)>ai ) THEN //1
+	m1 := -1;
+	m2 := 1;
+	m3 := -1;
+	m4 := 1;
+ELSIF (bi>0) and (di<0) and (ai<0) and (ABS(di)>ABS(ai)) THEN //2
+	m1 := -1;
+	m2 := 1;
+	m3 := -1;
+	m4 := 1;
+ELSIF (bi>0) and (di>0) and (ai>0) and (di>ai) THEN //3
+	m1 := -1;
+	m2 := -1;
+	m3 := -1;
+	m4 := -1;
+ELSIF (bi>0) and (di<0) and (ai<0) and (abs(di)=abs(ai)) THEN //4
+	m1 := 1;
+	m2 := -1;
+	m3 := 1;
+	m4 := -1;
+ELSIF (bi>0) and (ai<0) and (di>0) and (ABS(ai)>di) THEN //5
+	m1 := -1;
+	m2 := 1;
+	m3 := -1;
+	m4 := 1;
+ELSIF (bi<0) and (ai<0) and (di<0) and (ABS(di)>ABS(ai)) THEN //6
+	m1 := -1;
+	m2 := 1;
+	m3 := -1;
+	m4 := 1;
+ELSIF (bi<0) and (ai<0) and (di<0) and (ABS(di)<ABS(ai)) THEN //7
+	m1 := 1;
+	m2 := -1;
+	m3 := 1;
+	m4 := -1;
+ELSIF (bi<0) and (ai<0) and (di>0) and (ABS(di)<ABS(ai)) THEN //8
+	m1 := 1;
+	m2 := -1;
+	m3 := 1;
+	m4 := -1;
+ELSIF (bi<0) and (ai<0) and (di<0) and (ABS(di)=ABS(ai)) THEN //9
+	m1 := -1;
+	m2 := 1;
+	m3 := -1;
+	m4 := 1;
+ELSE
+	m1 := 1;
+	m2 := 1;
+	m3 := 1;
+	m4 := 1;
+END_IF;
+	
+///
+
+vec_1 := m1*x2/divisor;
+vec_2 := m2*-x1/divisor;
+vec_3 := m3*y2/divisor;
+vec_4 := m4*-y1/divisor;]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>

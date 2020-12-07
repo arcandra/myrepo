@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="c_bar" Comment="Composite FB wrapping other FBs">
+	<Identification Standard="61499-2" Description="Part of ellipse fitting method, to find c_bar." >
+	</Identification>
+	<VersionInfo Organization="UGM" Version="1.0" Author="Candra Wardaya" Date="2020-08-19">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization Request">
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="Normal Execution Request">
+				<With Var="const_1"/>
+				<With Var="const_2"/>
+				<With Var="const_3"/>
+				<With Var="const_4"/>
+				<With Var="const_5"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Initialization Confirm">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="Execution Confirmation">
+				<With Var="c_bar"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="const_1" Type="REAL" Comment="Single Real Input"/>
+			<VarDeclaration Name="const_2" Type="REAL" Comment="Single Real Input"/>
+			<VarDeclaration Name="const_3" Type="REAL" Comment="Single Real Input"/>
+			<VarDeclaration Name="const_4" Type="REAL" Comment="Single Real Input"/>
+			<VarDeclaration Name="const_5" Type="REAL" Comment="Single Real Input"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="c_bar" Type="REAL" Comment="Single Real Output"/>
+		</OutputVars>
+	</InterfaceList>
+	<FBNetwork>
+		<FB Name="Real_Half" Type="Real_Half" Comment="" x="1333.3333333333335" y="-133.33333333333334">
+		</FB>
+		<FB Name="MatrixInverse2x2" Type="MatrixInverse2x2" Comment="" x="2533.3333333333335" y="-400.0">
+		</FB>
+		<FB Name="t" Type="t" Comment="" x="4000.0" y="-266.6666666666667">
+		</FB>
+		<FB Name="c_bar_in" Type="c_bar_in" Comment="" x="5200.0" y="0.0">
+		</FB>
+		<EventConnections>
+			<Connection Source="REQ" Destination="Real_Half.REQ" Comment="" dx1="473.33333333333337"/>
+			<Connection Source="INIT" Destination="Real_Half.INIT" Comment="" dx1="473.33333333333337"/>
+			<Connection Source="Real_Half.INITO" Destination="MatrixInverse2x2.INIT" Comment="" dx1="313.33333333333337"/>
+			<Connection Source="Real_Half.CNF" Destination="MatrixInverse2x2.REQ" Comment="" dx1="313.33333333333337"/>
+			<Connection Source="MatrixInverse2x2.CNF" Destination="t.REQ" Comment="" dx1="280.0"/>
+			<Connection Source="MatrixInverse2x2.INITO" Destination="t.INIT" Comment="" dx1="280.0"/>
+			<Connection Source="t.CNF" Destination="c_bar_in.REQ" Comment="" dx1="306.6666666666667"/>
+			<Connection Source="t.INITO" Destination="c_bar_in.INIT" Comment="" dx1="306.6666666666667"/>
+			<Connection Source="c_bar_in.INITO" Destination="INITO" Comment="" dx1="793.3333333333334"/>
+			<Connection Source="c_bar_in.CNF" Destination="CNF" Comment="" dx1="793.3333333333334"/>
+		</EventConnections>
+		<DataConnections>
+			<Connection Source="Real_Half.Xo" Destination="MatrixInverse2x2.ci" Comment="" dx1="380.0"/>
+			<Connection Source="Real_Half.Xo" Destination="MatrixInverse2x2.bi" Comment="" dx1="380.0"/>
+			<Connection Source="const_3" Destination="Real_Half.Xi" Comment="" dx1="473.33333333333337"/>
+			<Connection Source="const_1" Destination="MatrixInverse2x2.ai" Comment="" dx1="1140.0"/>
+			<Connection Source="const_2" Destination="MatrixInverse2x2.di" Comment="" dx1="1140.0"/>
+			<Connection Source="MatrixInverse2x2.ao" Destination="t.ai" Comment="" dx1="280.0"/>
+			<Connection Source="MatrixInverse2x2.bo" Destination="t.bi" Comment="" dx1="280.0"/>
+			<Connection Source="MatrixInverse2x2.co" Destination="t.ci" Comment="" dx1="280.0"/>
+			<Connection Source="MatrixInverse2x2.d_o" Destination="t.di" Comment="" dx1="280.0"/>
+			<Connection Source="const_4" Destination="t.const_4" Comment="" dx1="1806.6666666666667"/>
+			<Connection Source="const_5" Destination="t.const_5" Comment="" dx1="1806.6666666666667"/>
+			<Connection Source="const_1" Destination="c_bar_in.ai" Comment="" dx1="2406.666666666667"/>
+			<Connection Source="const_2" Destination="c_bar_in.di" Comment="" dx1="2406.666666666667"/>
+			<Connection Source="Real_Half.Xo" Destination="c_bar_in.bi" Comment="" dx1="1646.6666666666667"/>
+			<Connection Source="Real_Half.Xo" Destination="c_bar_in.ci" Comment="" dx1="1646.6666666666667"/>
+			<Connection Source="t.x" Destination="c_bar_in.x" Comment="" dx1="326.6666666666667"/>
+			<Connection Source="t.y" Destination="c_bar_in.y" Comment="" dx1="326.6666666666667"/>
+			<Connection Source="const_4" Destination="c_bar_in.const_4" Comment="" dx1="2406.666666666667"/>
+			<Connection Source="const_5" Destination="c_bar_in.const_5" Comment="" dx1="2406.666666666667"/>
+			<Connection Source="c_bar_in.c_bar" Destination="c_bar" Comment="" dx1="793.3333333333334"/>
+		</DataConnections>
+	</FBNetwork>
+</FBType>

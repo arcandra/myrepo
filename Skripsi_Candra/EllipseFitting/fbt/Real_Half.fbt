@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FBType Name="Real_Half" Comment="Basic FB with empty ECC">
+	<Identification Standard="61499-2" Description="Multiply real input with a half." >
+	</Identification>
+	<VersionInfo Organization="UGM" Version="1.0" Author="Candra Wardaya" Date="2020-08-17">
+	</VersionInfo>
+	<InterfaceList>
+		<EventInputs>
+			<Event Name="INIT" Type="Event" Comment="Initialization">
+			</Event>
+			<Event Name="REQ" Type="Event" Comment="Execution Request">
+				<With Var="Xi"/>
+			</Event>
+		</EventInputs>
+		<EventOutputs>
+			<Event Name="INITO" Type="Event" Comment="Output Initialization">
+			</Event>
+			<Event Name="CNF" Type="Event" Comment="Confirmation of Execution">
+				<With Var="Xo"/>
+			</Event>
+		</EventOutputs>
+		<InputVars>
+			<VarDeclaration Name="Xi" Type="REAL" Comment="Real Input"/>
+		</InputVars>
+		<OutputVars>
+			<VarDeclaration Name="Xo" Type="REAL" Comment="Real Output"/>
+		</OutputVars>
+	</InterfaceList>
+	<BasicFB>
+		<InternalVars>
+			<VarDeclaration Name="X" Type="REAL" Comment="Internal Variable" InitialValue=""/>
+		</InternalVars>
+		<ECC>
+			<ECState Name="START" Comment="Initial State" x="933.3333333333334" y="800.0">
+			</ECState>
+			<ECState Name="Initialization" Comment="" x="2286.666666666667" y="446.6666666666667">
+				<ECAction Algorithm="Initialise" Output="INITO"/>
+			</ECState>
+			<ECState Name="Calculation" Comment="" x="2486.666666666667" y="1153.3333333333335">
+				<ECAction Algorithm="Calculate" Output="CNF"/>
+			</ECState>
+			<ECTransition Source="START" Destination="Initialization" Condition="INIT" Comment="" x="1440.0" y="393.33333333333337"/>
+			<ECTransition Source="Initialization" Destination="START" Condition="1" Comment="" x="1746.6666666666667" y="673.3333333333334"/>
+			<ECTransition Source="START" Destination="Calculation" Condition="REQ" Comment="" x="1933.3333333333335" y="1073.3333333333335"/>
+			<ECTransition Source="Calculation" Destination="START" Condition="1" Comment="" x="1473.3333333333335" y="1353.3333333333335"/>
+		</ECC>
+		<Algorithm Name="Initialise" Comment="New Algorithm">
+			<ST><![CDATA[]]></ST>
+		</Algorithm>
+		<Algorithm Name="Calculate" Comment="New Algorithm">
+			<ST><![CDATA[Xo := Xi*0.5;]]></ST>
+		</Algorithm>
+	</BasicFB>
+</FBType>
